@@ -40,5 +40,6 @@
         "activityBar.activeBorder": "#db3924",
         "activityBarBadge.foreground": "#ffffff",
         "activityBarBadge.background": "#db3924"
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
