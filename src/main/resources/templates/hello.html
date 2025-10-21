@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Veículos</title>
+</head>
+<script>
+    function salvarVeiculo() {
+        alert('aeiou')
+    }
+    function editarVeiculo() {
+        alert('abcde')
+    }
+</script>
+<body>
+    <h1>Gerenciamento de Veículos</h1>
+    <button onclick="document.getElementById('modalCadastro').style.display='block'">Cadastrar Veículo</button>
+    <button onclick="location.reload()">Recarregar Lista</button>
+
+    <table border="1" style="width:100%; margin-top:20px; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="padding:10px;">Descrição</th>
+                <th style="padding:10px;">Fabricante</th>
+                <th style="padding:10px;">Cor</th>
+                <th style="padding:10px;">Placa</th>
+                <th style="padding:10px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding:10px;">Civic EX</td>
+                <td style="padding:10px;">Honda</td>
+                <td style="padding:10px;">Preto</td>
+                <td style="padding:10px;">ABC-1234</td>
+                <td style="padding:10px;">
+                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
+                    <button>Deletar</button>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:10px;">Corolla XEI</td>
+                <td style="padding:10px;">Toyota</td>
+                <td style="padding:10px;">Prata</td>
+                <td style="padding:10px;">DEF-5678</td>
+                <td style="padding:10px;">
+                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
+                    <button>Deletar</button>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:10px;">Onix LT</td>
+                <td style="padding:10px;">Chevrolet</td>
+                <td style="padding:10px;">Branco</td>
+                <td style="padding:10px;">GHI-9012</td>
+                <td style="padding:10px;">
+                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
+                    <button>Deletar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal Cadastro -->
+    <div id="modalCadastro" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:100px auto; padding:25px; width:400px;">
+            <h2>Cadastrar Veículo</h2>
+            <label>Descrição:</label><br>
+            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Fabricante:</label><br>
+            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Cor:</label><br>
+            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Placa:</label><br>
+            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <button onclick="salvarVeiculo()">Salvar</button>
+            <button onclick="document.getElementById('modalCadastro').style.display='none'">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div id="modalEditar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:100px auto; padding:20px; width:400px;">
+            <h2>Editar Veículo</h2>
+            <label>Descrição:</label><br>
+            <input type="text" value="Civic EX" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Fabricante:</label><br>
+            <input type="text" value="Honda" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Cor:</label><br>
+            <input type="text" value="Preto" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <label>Placa:</label><br>
+            <input type="text" value="ABC-1234" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <button onclick="editarVeiculo()">Salvar</button>
+            <button onclick="document.getElementById('modalEditar').style.display='none'">Cancelar</button>
+        </div>
+    </div>
+</body>
+</html>
