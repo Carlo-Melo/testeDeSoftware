@@ -7,10 +7,93 @@
 </head>
 <script>
     function salvarVeiculo() {
-        alert('aeiou')
+        const veiculo = {
+            descricao: document.getElementById('cadDescricao').value,
+            fabricante: document.getElementById('cadFabricante').value,
+            cor: document.getElementById('cadCor').value,
+            placa: document.getElementById('cadPlaca').value
+        };
+
+        if (!veiculo.descricao || !veiculo.fabricante || !veiculo.cor || !veiculo.placa) {
+            alert('Preencha todos os campos!');
+            return;
+        }
+
+        fetch('/veiculos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(veiculo)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Veículo cadastrado com sucesso!');
+            document.getElementById('modalCadastro').style.display = 'none';
+            location.reload();
+        })
+        .catch(error => alert('Erro ao cadastrar veículo'));
     }
+
     function editarVeiculo() {
-        alert('abcde')
+        const id = document.getElementById('editId').value;
+        const veiculo = {
+            descricao: document.getElementById('editDescricao').value,
+            fabricante: document.getElementById('editFabricante').value,
+            cor: document.getElementById('editCor').value,
+            placa: document.getElementById('editPlaca').value
+        };
+
+        if (!veiculo.descricao || !veiculo.fabricante || !veiculo.cor || !veiculo.placa) {
+            alert('Preencha todos os campos!');
+            return;
+        }
+
+        fetch('/veiculos/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(veiculo)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Veículo atualizado com sucesso!');
+            document.getElementById('modalEditar').style.display = 'none';
+            location.reload();
+        })
+        .catch(error => alert('Erro ao atualizar veículo'));
+    }
+
+    function deletar(btn) {
+        if (!confirm('Deseja deletar?')) {
+            return;
+        }
+        let id = btn.dataset.id;
+        fetch('/veiculos/'+id, {
+            method: 'DELETE',
+        })
+        .then(data => alert('veiculo deletado com sucesso'))
+        .catch(error => alert('erro ao deletar veiculo'));
+        location.reload()
+    }
+
+    function abrirModalEditar(id, descricao, fabricante, cor, placa) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editDescricao').value = descricao;
+        document.getElementById('editFabricante').value = fabricante;
+        document.getElementById('editCor').value = cor;
+        document.getElementById('editPlaca').value = placa;
+        document.getElementById('modalEditar').style.display = 'block';
+    }
+
+    function abrirModalEditarDados(btn) {
+        const id = btn.dataset.id;
+        const descricao = btn.dataset.descricao;
+        const fabricante = btn.dataset.fabricante;
+        const cor = btn.dataset.cor;
+        const placa = btn.dataset.placa;
+        abrirModalEditar(id, descricao, fabricante, cor, placa);
     }
 </script>
 <body>
@@ -29,34 +112,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td style="padding:10px;">Civic EX</td>
-                <td style="padding:10px;">Honda</td>
-                <td style="padding:10px;">Preto</td>
-                <td style="padding:10px;">ABC-1234</td>
+            <tr th:each="veiculo : ${veiculos}">
+                <td style="padding:10px;" th:text="${veiculo.descricao}"></td>
+                <td style="padding:10px;" th:text="${veiculo.fabricante}"></td>
+                <td style="padding:10px;" th:text="${veiculo.cor}"></td>
+                <td style="padding:10px;" th:text="${veiculo.placa}"></td>
                 <td style="padding:10px;">
-                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
-                    <button>Deletar</button>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding:10px;">Corolla XEI</td>
-                <td style="padding:10px;">Toyota</td>
-                <td style="padding:10px;">Prata</td>
-                <td style="padding:10px;">DEF-5678</td>
-                <td style="padding:10px;">
-                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
-                    <button>Deletar</button>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding:10px;">Onix LT</td>
-                <td style="padding:10px;">Chevrolet</td>
-                <td style="padding:10px;">Branco</td>
-                <td style="padding:10px;">GHI-9012</td>
-                <td style="padding:10px;">
-                    <button onclick="document.getElementById('modalEditar').style.display='block'">Editar</button>
-                    <button>Deletar</button>
+                    <button class="btn-editar"
+                            onclick="abrirModalEditarDados(this)"
+                            th:data-id="${veiculo.id}"
+                            th:data-descricao="${veiculo.descricao}"
+                            th:data-fabricante="${veiculo.fabricante}"
+                            th:data-cor="${veiculo.cor}"
+                            th:data-placa="${veiculo.placa}">Editar</button>
+                    <button onclick="deletar(this)" class="btn-deletar" th:data-id="${veiculo.id}">Deletar</button>
                 </td>
             </tr>
         </tbody>
@@ -67,13 +136,13 @@
         <div style="background:white; margin:100px auto; padding:25px; width:400px;">
             <h2>Cadastrar Veículo</h2>
             <label>Descrição:</label><br>
-            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="cadDescricao" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Fabricante:</label><br>
-            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="cadFabricante" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Cor:</label><br>
-            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="cadCor" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Placa:</label><br>
-            <input type="text" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="cadPlaca" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <button onclick="salvarVeiculo()">Salvar</button>
             <button onclick="document.getElementById('modalCadastro').style.display='none'">Cancelar</button>
         </div>
@@ -83,14 +152,15 @@
     <div id="modalEditar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
         <div style="background:white; margin:100px auto; padding:20px; width:400px;">
             <h2>Editar Veículo</h2>
+            <input type="hidden" id="editId">
             <label>Descrição:</label><br>
-            <input type="text" value="Civic EX" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="editDescricao" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Fabricante:</label><br>
-            <input type="text" value="Honda" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="editFabricante" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Cor:</label><br>
-            <input type="text" value="Preto" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="editCor" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <label>Placa:</label><br>
-            <input type="text" value="ABC-1234" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+            <input type="text" id="editPlaca" style="width:100%; padding:8px; margin-bottom:10px;"><br>
             <button onclick="editarVeiculo()">Salvar</button>
             <button onclick="document.getElementById('modalEditar').style.display='none'">Cancelar</button>
         </div>
