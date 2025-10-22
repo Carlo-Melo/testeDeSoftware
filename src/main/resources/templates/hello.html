@@ -73,9 +73,11 @@
         fetch('/veiculos/'+id, {
             method: 'DELETE',
         })
-        .then(data => alert('veiculo deletado com sucesso'))
+        .then(data => {
+            alert('veiculo deletado com sucesso')
+            location.reload()
+        })
         .catch(error => alert('erro ao deletar veiculo'));
-        location.reload()
     }
 
     function abrirModalEditar(id, descricao, fabricante, cor, placa) {
