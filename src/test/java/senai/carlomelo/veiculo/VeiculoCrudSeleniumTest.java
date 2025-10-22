@@ -22,7 +22,7 @@ public class VeiculoCrudSeleniumTest {
     private int port;
 
     private static WebDriver driver;
-    private static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private static WebDriverWait wait;
 
     @BeforeAll
     static void setupClass() {
@@ -31,6 +31,7 @@ public class VeiculoCrudSeleniumTest {
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterAll
