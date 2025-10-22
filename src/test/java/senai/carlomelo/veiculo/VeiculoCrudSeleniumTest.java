@@ -64,7 +64,7 @@ public class VeiculoCrudSeleniumTest {
         );
         btnCadastrar.click();
 
-        WebElement modal = wait.until(
+        wait.until(
             ExpectedConditions.visibilityOfElementLocated(By.id("modalCadastro"))
         );
 
@@ -107,7 +107,7 @@ public class VeiculoCrudSeleniumTest {
         );
         btnEditar.click();
 
-        WebElement modalEditar = wait.until(
+        wait.until(
             ExpectedConditions.visibilityOfElementLocated(By.id("modalEditar"))
         );
 
